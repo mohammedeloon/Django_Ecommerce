@@ -7,6 +7,11 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+    
+    #correct django defaul Pluralization  (Categorys -> Categories)
+    class Meta:
+        verbose_name_plural = 'categories'
+        
 
 class Customer(models.Model):
     first_name = models.CharField(max_length=50)
