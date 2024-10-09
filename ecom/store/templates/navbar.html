@@ -19,15 +19,13 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button"
                         data-bs-toggle="dropdown" aria-expanded="false">Categories</a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">All Products</a></li>
+                        <li><a class="dropdown-item" href="{% url 'index' %}">All Products</a></li>
                         <li>
                             <hr class="dropdown-divider" />
                         </li>
                         {% load custom_filters %}
-
-                        {% for category in categories %}
-                        {{ category}}
-                        <li><a class="dropdown-item" href="{% url 'category' category.name|slugify %}">{{ category.name }}</a></li>
+                        {% for category in categories%}
+                        <li><a class="dropdown-item" href="{% url 'category' category.name|slugify %}"> {{category.name}} </a></li>
                         {% endfor %}
                     </ul>
                 </li>
