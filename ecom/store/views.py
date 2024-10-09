@@ -47,3 +47,22 @@ def logout_user(request):
     logout(request)
     messages.success(request, ('Logged Out Successfully'))
     return redirect('index')
+
+def product(request, pk):
+    product = Product.objects.get(id=pk)
+    return render(request, 'product.html', {'product': product})
+
+def category(request, foo):
+    # Replace hyphens on links with space
+    foo = foo.replace('-', ' ')
+    try:
+        category = Category.objects.get(name= foo)
+        categories = Category.objects.all()
+        products = Product.objects.filter(category=category)
+        return render(request, 'category.html', {'products': products, 'category': category, 'categories': categories})
+
+    except:
+        messages.error(request, 'This category does not exist!')
+        return redirect('index.html')
+    
+
