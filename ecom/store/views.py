@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm
 from django import forms
 from django.contrib import messages
-
+from django.contrib.sessions.models import Session
 
 def index(request):
     products = Product.objects.all() 
