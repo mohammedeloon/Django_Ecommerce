@@ -17,7 +17,12 @@
                              {{ product.price }}$
                         {% endif %}
                         <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                        <a href="{% url 'index' %}" class="btn btn-primary mt-3">Home</a>
+
+                        <div class="d-flex justify-content-start align-items-center mt-3">
+                            <a href="{% url 'index' %}" class="btn btn-secondary me-2">Home</a>
+                            <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add to Cart</button>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -25,4 +30,35 @@
     </div>
 </div>
 <br><br><br><br><br><br><br><br><br><br><br>
+
+<script>
+    // Check if button pressed
+    $(document).on('click', '#add-cart', function(e){
+        e.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'add_cart' %}",
+            data: {
+            product_id: $('#add-cart').val(),
+            // product_qty: $('#qty-cart option:selected').text(),
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            action: 'post'
+            },
+    
+            success: function(json){
+                console.log(json);
+                // document.getElementById("cart_quantity").textContent = json.qty
+                // location.reload();
+            },
+    
+            error: function(xhr, errmsg, err){
+    
+            }
+
+        });
+     
+    })
+    
+    </script>
+
 {% endblock %}
