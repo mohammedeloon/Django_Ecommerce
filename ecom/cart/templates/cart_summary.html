@@ -26,7 +26,12 @@
                     {% else %}
                     <li class="list-group-item">Price: {{ product.price }} $</li>
                     {% endif %}
-                    <li class="list-group-item">Quantity: 20</li>
+                   
+                    <li class="list-group-item">Quantity: {% for key, value in quantities.items %}
+                        {% if key == product.id|slugify %}
+                            {{ value }}
+                        {% endif %}
+                        {% endfor %}</li>
                 </ul>
                 <div class="card-body">
                   <a href="{% url 'product' product.id %}" class="card-link">View Product</a>
