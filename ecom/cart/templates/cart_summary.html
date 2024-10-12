@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-    <!-- Header-->
     <header class="bg-dark py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="text-center text-white">
@@ -10,6 +9,49 @@
             </div>
         </div>
     </header>
+    <br>
+    <div class="container">
+        <div class="row">
+        {% if cart %}
+        {% for product in cart %}
+        <div class="col-12 d-flex justify-content-center my-3">
+            <div class="card" style="width: 18rem;">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{ product.name }}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    {% if product.on_sale %}
+                    <li class="list-group-item">Price: {{ product.sale_price }} $</li>
+                    {% else %}
+                    <li class="list-group-item">Price: {{ product.price }} $</li>
+                    {% endif %}
+                    <li class="list-group-item">Quantity: 20</li>
+                </ul>
+                <div class="card-body">
+                  <a href="{% url 'product' product.id %}" class="card-link">View Product</a>
+                  <a href="#" class="card-link">Remove Product</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="container text-center mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="alert alert-warning" role="alert">
+                        <h4 class="alert-heading"><i class="bi bi-cart-x"></i> Your Cart Is Empty</h4>
+                        <p class="mb-0">It looks like you haven't added anything to your cart yet. Explore our products and find something you like!</p>
+                        <hr>
+                        <a href="{% url 'index' %}" class="btn btn-secondary  mt-3">Browse Products</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        </div>
+    </div>
+    
   <br><br><br><br><br><br><br><br><br><br>
 {% endblock %}
  
