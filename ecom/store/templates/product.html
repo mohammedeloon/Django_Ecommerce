@@ -22,7 +22,7 @@
                             <a href="{% url 'index' %}" class="btn btn-secondary me-2">Home</a>
                             <button type="button" value="{{ product.id }}" class="btn btn-secondary" id="add-cart">Add to Cart</button>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
@@ -46,9 +46,9 @@
             },
     
             success: function(json){
-                console.log(json);
-                // document.getElementById("cart_quantity").textContent = json.qty
-                // location.reload();
+                // console.log(json);
+                document.getElementById("cart_quantity").textContent = json.cart_quantity
+                location.reload();
             },
     
             error: function(xhr, errmsg, err){

@@ -8,7 +8,7 @@ class Cart():
         self.cart = cart
 
         # if the user is new, create a session_key
-        if 'session_key' not in cart:
+        if 'session_key' not in request.session:
             cart = self.session['session_key'] = {} 
 
     def add(self, product):
@@ -19,5 +19,8 @@ class Cart():
         else:
             self.cart[product_id] = {'price': str(product.price)}
         self.session.modified = True
+
+    def __len__(self):
+        return len(self.cart)
 
 
