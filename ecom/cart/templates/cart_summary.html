@@ -34,8 +34,8 @@
                         {% endfor %}</li>
                 </ul>
                 <div class="card-body">
-                  <a href="{% url 'product' product.id %}" class="card-link">View Product</a>
-                  <a href="#" class="card-link">Remove Product</a>
+                  <a href="{% url 'product' product.id %}" class="btn btn-secondary">View Product</a>
+                  <button type="button" class="btn btn-danger delete-product" data-index="{{ product.id }}">Remove Product</button>
                 </div>
             </div>
         </div>
@@ -58,5 +58,36 @@
     </div>
     
   <br><br><br><br><br><br><br><br><br><br>
-{% endblock %}
+
+  <script>
+    // Delete Item From Cart
+$(document).on('click', '.delete-product', function(e){
+    e.preventDefault();
+    // grab the product id
+    //var productid = $(this).data('index');
+
+    $.ajax({
+    type: 'POST',
+    url: "{% url 'delete_cart' %}",
+    data: {
+      product_id: $(this).data('index'),
+      csrfmiddlewaretoken: '{{ csrf_token }}',
+      action: 'post'
+    },
+    success: function(json){
+        //console.log(json)
+        //document.getElementById("cart_quantity").textContent = json.qty
+        location.reload();
+    },
+
+    error: function(xhr, errmsg, err){
+
+    }
+
+
+    });
+
+})
+  </script>
+  {% endblock %}
  

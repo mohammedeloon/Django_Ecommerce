@@ -34,6 +34,14 @@ class Cart():
     def get_quantity(self):
         quantities = self.cart 
         return quantities
+    
+    def delete(self, product):
+        product_id = str(product)
+        if product_id in self.cart.keys():
+            self.cart.pop(product_id)
+        self.session.modified = True 
+            
+
         
 		
         
