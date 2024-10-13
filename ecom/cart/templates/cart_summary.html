@@ -33,13 +33,38 @@
                         {% endif %}
                         {% endfor %}</li>
                 </ul>
-                <div class="card-body">
-                  <a href="{% url 'product' product.id %}" class="btn btn-secondary">View Product</a>
-                  <button type="button" class="btn btn-danger delete-product" data-index="{{ product.id }}">Remove Product</button>
+                <div class="container my-4">
+                    <div class="row justify-content-center">
+                        <div class="d-flex gap-3">
+                            <a href="{% url 'product' product.id %}" class="btn btn-outline-secondary btn-lg">
+                                 View Product
+                            </a>
+                            <button type="button" class="btn btn-danger btn-lg delete-product" data-index="{{ product.id }}">
+                                Remove Product
+                            </button>
+                        </div>
+                    </div>
                 </div>
+                
+                
             </div>
         </div>
         {% endfor %}
+        <div class="container my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card text-center shadow-sm border-0">
+                        <div class="card-body">
+                            <h5 class="card-title">Cart Summary</h5>
+                            <hr>
+                            <p class="card-text fs-4 fw-bold">Total: <span class="text-success">${{ total_price }}</span></p>
+                            <a href="" class="btn btn-secondary mt-3">Proceed to Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         {% else %}
         <div class="container text-center mt-5">
             <div class="row justify-content-center">

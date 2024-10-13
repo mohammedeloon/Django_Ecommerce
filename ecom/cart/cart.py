@@ -40,6 +40,20 @@ class Cart():
         if product_id in self.cart.keys():
             self.cart.pop(product_id)
         self.session.modified = True 
+
+    def count_total(self):
+        prices = []
+        for product_id, qty in self.cart.items():
+            product = Product.objects.get(id=product_id)
+            if product.on_sale:
+                product_price = product.sale_price * qty
+                prices.append(product_price)
+            else:
+                product_price = product.price * qty
+                prices.append(product_price)
+        return sum(prices)
+
+
             
 
         
