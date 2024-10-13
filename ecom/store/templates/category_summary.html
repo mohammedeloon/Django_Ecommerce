@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">View All of Our Categories</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Choose what you want.. </p>
+        </div>
+    </div>
+</header>
+{% for category in categories %}
+<div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{category.name}}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+      <a href="{% url 'category' category.name|slugify %}" class="btn btn-primary">View Category</a>
+    </div>
+  </div>
+{% endfor %}
+
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
