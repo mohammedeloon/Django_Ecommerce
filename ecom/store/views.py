@@ -3,7 +3,7 @@ from .models import Category, Product
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm
+from .forms import SignUpForm, UpdateUserForm
 from django import forms
 from django.contrib import messages
 from django.contrib.sessions.models import Session
@@ -42,7 +42,23 @@ def register_user(request):
                 messages.success(request, ('ops! There was a problem registering the user. Please, try again.'))
     
         return render(request, 'register.html', {'form': form})
-        
+
+def update_user(request):
+    if request.user.is_authenticated:
+        current_user = User.objects.get(id=request.user.id)
+        user_form = UpdateUserForm(request.POST or None, instance=current_user)
+
+        if user_form.is_valid():
+            user_form.save()
+            login(request, current_user)
+            messages.success(request, 'User Has Been Updated!')
+            return redirect('index')
+    
+        return render(request, 'update_user.html', {'user_form':user_form})
+    else:
+        messages.success(request, 'You Must Be Logged in to Access that Page!')
+        return redirect('index')
+    
 def logout_user(request):
     logout(request)
     messages.success(request, ('Logged Out Successfully'))
