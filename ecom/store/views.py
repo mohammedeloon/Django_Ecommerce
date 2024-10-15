@@ -59,6 +59,10 @@ def update_user(request):
         messages.success(request, 'You Must Be Logged in to Access that Page!')
         return redirect('index')
     
+def update_password(request):
+    # It has been made through Django built-in views (PasswordChangeView) called in the urls page directly
+    pass
+
 def logout_user(request):
     logout(request)
     messages.success(request, ('Logged Out Successfully'))
