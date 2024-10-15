@@ -14,7 +14,7 @@ class Profile(models.Model):
     zipcode = models.CharField(max_length=200, blank=True)
     country = models.CharField(max_length=200, blank=True)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.user.username
     
 # create a user profile by default when a user signs up
@@ -29,7 +29,7 @@ post_save.connect(create_profile, sender=User)
 class Category(models.Model): 
     name = models.CharField(max_length=50)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
     
     #correct django defaul Pluralization  (Categorys -> Categories)
@@ -44,7 +44,7 @@ class Customer(models.Model):
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=100)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.first_name} {self.last_name}' 
     
 class Product(models.Model):
@@ -56,6 +56,9 @@ class Product(models.Model):
     on_sale = models.BooleanField(default=False)
     sale_price = models.DecimalField(default=0, decimal_places=2, max_digits=6)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     Customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
@@ -66,6 +69,6 @@ class Order(models.Model):
     status = models.BooleanField(default=False)
 
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.product}'
          
