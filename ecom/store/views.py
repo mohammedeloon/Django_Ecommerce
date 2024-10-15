@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from .models import Category, Product
+from .models import Category, Product, Profile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .forms import SignUpForm, UpdateUserForm
+from .forms import SignUpForm, UpdateUserForm, UserInfoForm
 from django import forms
 from django.contrib import messages
 from django.contrib.sessions.models import Session
@@ -36,8 +36,14 @@ def register_user(request):
             form = SignUpForm(request.POST)
             if form.is_valid():
                 form.save()
-                username = form.cleaned_data.get('username')
-                messages.success(request, f'An account has been created for user {username}!')
+                username = form.cleaned_data['username']
+                password = form.cleaned_data['password1']
+                user = authenticate(username=username, password=password)
+                # log in user
+                user = authenticate(username=username, password=password)
+                login(request, user)
+                messages.success(request, 'Username Created! Please Continue the Sign Up Process')
+                return redirect('update_info')
             else:
                 messages.success(request, ('ops! There was a problem registering the user. Please, try again.'))
     
@@ -58,6 +64,22 @@ def update_user(request):
     else:
         messages.success(request, 'You Must Be Logged in to Access that Page!')
         return redirect('index')
+    
+def update_info(request):
+    if request.user.is_authenticated:
+        current_user = Profile.objects.get(user__id=request.user.id)
+        form = UserInfoForm(request.POST or None, instance=current_user)
+
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User Information Has Been Updated!')
+            return redirect('index')
+        
+        return render(request, 'update_info.html', {'form': form})
+    else:
+        messages.success(request, 'You Must Be Logged in to Access that Page!')
+        return redirect('index')
+     
     
 def update_password(request):
     # It has been made through Django built-in views (PasswordChangeView) called in the urls page directly

@@ -1,9 +1,21 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm, PasswordChangeForm
 from django import forms
+from .models import Profile
 
-class UpdatePassword(PasswordChangeForm):
-	pass
+class UserInfoForm(forms.ModelForm):
+	phone_number = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'phone_number'}), required=False)
+	address1 = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'address1'}), required=False)
+	address2 = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'address2'}), required=False)
+	city = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'city'}), required=False)
+	state = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'state'}), required=False)
+	zipcode = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'zipcode'}), required=False)
+	country = forms.CharField(label='', widget=forms.TextInput(attrs={'class':'form-control', 'placeholder': 'country'}), required=False)
+	
+	class Meta:
+		model = Profile
+		fields = ('phone_number', 'address1', 'address2', 'city', 'state', 'zipcode', 'country', )
+		
 
 class SignUpForm(UserCreationForm):
 	email = forms.EmailField(label="", widget=forms.TextInput(attrs={'class':'form-control', 'placeholder':'Email Address'}))
