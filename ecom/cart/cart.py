@@ -1,7 +1,9 @@
-from store.models import Product
+from store.models import Product, Profile
 class Cart():
     def __init__(self, request):
         self.session = request.session
+        #get request
+        self.request = request
         
         # get the current session key if existed
         cart = self.session.get('session_key')
@@ -21,6 +23,16 @@ class Cart():
         else:
             self.cart[product_id] = int(product_qty)
         self.session.modified = True
+
+        # deal with logged in user 
+        if self.request.user.is_authenticated:
+            # get the current user profile
+            current_user = Profile.objects.filter(user__id=self.request.user.id)
+            # convert {'3': 1, '2': 3} to {"3": 1, "2": 3}
+            carty = str(self.cart)
+            carty = carty.replace("\'", "\"")
+            # save cart t0 profile model 
+            current_user.update(old_cart=carty)
 
     def __len__(self):
         return len(self.cart)
@@ -52,7 +64,8 @@ class Cart():
                 product_price = product.price * qty
                 prices.append(product_price)
         return sum(prices)
-
+    
+   
 
             
 
