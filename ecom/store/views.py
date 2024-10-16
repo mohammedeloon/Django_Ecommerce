@@ -94,6 +94,14 @@ def product(request, pk):
     product = Product.objects.get(id=pk)
     return render(request, 'product.html', {'product': product})
 
+def search_product(request):
+    query = request.GET.get('search')
+    query = query.strip()
+    products = None
+    if query:
+        products = Product.objects.filter(name__contains=query) | Product.objects.filter(description__contains=query)
+    return render(request, 'search_product.html', {'products': products, 'query': query})
+  
 def category(request, foo):
     # Replace hyphens on links with space
     foo = foo.replace('-', ' ')
@@ -110,3 +118,4 @@ def category(request, foo):
 def category_summary(request):
     categories = Category.objects.all()
     return render(request, 'category_summary.html', {'categories': categories})
+
