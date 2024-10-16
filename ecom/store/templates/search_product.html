@@ -29,8 +29,16 @@
         </div>
         {% endfor %}
     </div>
+    {% elif not query %}
+    <div class="alert alert-warning text-center" role="alert">
+        <i class="fa fa-exclamation-circle"></i> Please enter something in the search field to make your search.
+    </div>
+
     {% else %}
-    <p>No products found for your search.</p>
+    <div class="alert alert-danger text-center" role="alert">
+        <i class="fa fa-search-minus"></i> No products found for your search. Please try again with a different term.
+    </div>
+    
 
 </div>
 {% endif %}
