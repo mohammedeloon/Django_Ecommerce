@@ -4,6 +4,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .forms import SignUpForm, UpdateUserForm, UserInfoForm
+from payment.forms import ShippingForm
+from payment.models import ShippingAddress
 from django import forms
 from django.contrib import messages
 from django.contrib.sessions.models import Session
@@ -84,15 +86,27 @@ def update_user(request):
     
 def update_info(request):
     if request.user.is_authenticated:
+        # Get Current User
         current_user = Profile.objects.get(user__id=request.user.id)
+        # Get original User Form
         form = UserInfoForm(request.POST or None, instance=current_user)
 
-        if form.is_valid():
+        # Try to get the shipping address, if it doesn't exist, create an empty one
+        try:
+            shipping_user = ShippingAddress.objects.get(user__id=request.user.id)
+        except ShippingAddress.DoesNotExist:
+            shipping_user = None
+        
+        # Get User's Shipping Form
+        shipping_form = ShippingForm(request.POST or None, instance=shipping_user)	
+
+        if form.is_valid() or shipping_form.is_valid():
             form.save()
+            shipping_form.save()
             messages.success(request, 'User Information Has Been Updated!')
             return redirect('index')
         
-        return render(request, 'update_info.html', {'form': form})
+        return render(request, 'update_info.html', {'form': form, 'shipping_form': shipping_form })
     else:
         messages.success(request, 'You Must Be Logged in to Access that Page!')
         return redirect('index')

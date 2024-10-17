@@ -4,13 +4,13 @@ from django.contrib.auth.models import User
 class ShippingAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
     full_name = models.CharField(max_length=225)
-    email = models.CharField(max_length=225)
-    address1 = models.CharField(max_length=225)
-    address2 = models.CharField(max_length=225)
-    city = models.CharField(max_length=225)
-    state = models.CharField(max_length=225, null=True, blank=True)
-    zipcode = models.CharField(max_length=225, null=True, blank=True)
-    country = models.CharField(max_length=225)
+    shipping_email = models.CharField(max_length=225)
+    shipping_address1 = models.CharField(max_length=225)
+    shipping_address2 = models.CharField(max_length=225)
+    shipping_city = models.CharField(max_length=225)
+    shipping_state = models.CharField(max_length=225, null=True, blank=True)
+    shipping_zipcode = models.CharField(max_length=225, null=True, blank=True)
+    shipping_country = models.CharField(max_length=225)
 
     def __str__(self) -> str:
         return f"Shipping Address = {str(self.id)}"
