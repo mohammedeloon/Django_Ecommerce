@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from store.models import Product
+from django.db.models.signals import post_save
 
 class ShippingAddress(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
@@ -19,6 +20,15 @@ class ShippingAddress(models.Model):
     # Do not pluralize model name 
     class Meta:
         verbose_name_plural = 'ShippingAddress'
+
+# create a user profile by default when a user signs up
+def create_shipping_address(sender, instance, created, **kwargs):
+    if created:
+        user_profile = ShippingAddress(user=instance)
+        user_profile.save()
+
+# automate the profile creation
+post_save.connect(create_shipping_address, sender=User)
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
