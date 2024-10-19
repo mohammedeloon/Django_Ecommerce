@@ -14,7 +14,7 @@
         <!-- Order Summary Card -->
         <div class="col-lg-6">
             <div class="card shadow-sm mb-4">
-                <div class="card-header bg-primary text-white">
+                <div class="card-header bg-secondary text-white">
                     <h4 class="mb-0">Your Cart</h4>
                 </div>
                 <div class="card-body">
@@ -39,7 +39,7 @@
                         <h5 class="fw-bold">${{ cart_total_price }}</h5>
                     </div>
                     <div class="card-footer bg-light text-center py-3">
-                        <a href="{% url 'cart_summary' %}" class="btn btn-primary btn-lg px-5">
+                        <a href="{% url 'cart_summary' %}" class="btn btn-secondary btn-lg px-5">
                             <i class="fas fa-edit"></i> Update Cart
                         </a>
                     </div>
@@ -51,12 +51,11 @@
         <div class="col-lg-6">
             <div class="card shadow-sm">
                 <div class="card-header bg-secondary text-white">
-                    <h4 class="mb-0">Billing and Shipping Information</h4>
+                    <h4 class="mb-0">Shipping Information</h4>
                 </div>
                 <div class="card-body">
-                    <h5>Billing Address</h5>
-                    {{ billing_form.as_p}}
-                    <hr>
+                   <form action="{% url 'billing_info' %}" method="POST">
+                   {% csrf_token %}
                     <h5>Shipping Address</h5>
                     {{ shipping_form.as_p}}
                 </div>
@@ -68,9 +67,11 @@
     <!-- Checkout Button -->
     <div class="row justify-content-center mt-4">
         <div class="col-lg-4 text-center">
-            <a href="" class="btn btn-success btn-lg w-100">Proceed to Checkout</a>
+            <button href="{% url 'billing_info' %}" type="submit" class="btn btn-success btn-lg w-100">Proceed to Billing</button>
         </div>
     </div>
+</form>
+
 </section>
 
 {% endblock %}

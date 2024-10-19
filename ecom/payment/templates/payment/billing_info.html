@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block content %}
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Billing Information</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Enter Your Payment Information</p>
+        </div>
+    </div>
+</header>
+
+<section class="container my-5">
+    <div class="row justify-content-center">
+        <!-- Order Summary Card -->
+        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+            <div class="card shadow-sm w-100">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">Your Cart</h4>
+                </div>
+                <div class="card-body">
+                    {% for product in cart_products %}
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div>
+                                <h5 class="fw-bold">{{ product.name }}</h5>
+                                <p class="mb-0 text-muted">Quantity: 
+                                    {% for key, value in cart_products_qty.items %}
+                                        {% if key == product.id|slugify %}
+                                            {{ value }}
+                                        {% endif %}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div>
+                                <p class="mb-0 fw-bold">${{ product.price }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <h5>Total Price:</h5>
+                        <h5 class="fw-bold">${{ cart_total_price }}</h5>
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-center py-3">
+                    <a href="{% url 'cart_summary' %}" class="btn btn-secondary btn-lg px-5">
+                        <i class="fas fa-edit"></i> Update Cart
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipping Information Card -->
+        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+            <div class="card shadow-sm w-100">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">Shipping Information</h4>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+                    <h5>Shipping Address</h5>
+                    Full Name: {{ shipping_info.shipping_full_name }} <br>
+                    Shipping Email: {{ shipping_info.shipping_email }} <br>
+                    Shipping Address: {{ shipping_info.shipping_address1 }} <br>
+                    Shipping Address 2: {{ shipping_info.shipping_address2 }} <br>
+                    City: {{ shipping_info.shipping_city }} <br>
+                    State: {{ shipping_info.shipping_state }} <br>
+                    Zip Code: {{ shipping_info.shipping_zipcode }} <br>
+                    Country: {{ shipping_info.shipping_country }} <br>
+                </div>
+                <div class="card-footer bg-light text-center py-3">
+                    <a href="{% url 'check_out' %}" class="btn btn-secondary btn-lg px-5">
+                        <i class="fas fa-edit"></i> Update Shipping Info
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing Information Card -->
+        <div class="col-12 col-md-6 d-flex justify-content-center mb-4">
+            <div class="card shadow-sm w-100">
+                <div class="card-header bg-secondary text-white">
+                    <h4 class="mb-0">Billing Information</h4>
+                </div>
+                <div class="card-body">
+                    {{ billing_form.as_p }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Button -->
+    <div class="row justify-content-center mt-4">
+        <div class="col-12 col-md-6 d-flex justify-content-center text-center">
+            <a href="#" class="btn btn-success btn-lg w-100">Pay</a>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}
