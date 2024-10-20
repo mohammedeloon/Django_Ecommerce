@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from cart.cart import Cart
 from payment.models import ShippingAddress, Order, OrderItem
 from django.contrib.auth.models import User
-from store.models import Profile
+from store.models import Profile, Product
 from payment.forms import ShippingForm, PaymentForm
 from store.forms import UserInfoForm
 from django.contrib import messages
@@ -61,7 +61,7 @@ def process_order(request):
         cart_products = cart.get_items()
         cart_products_qty = cart.get_quantity()
         cart_total_price = cart.count_total()
-
+        
         # Get Billing Info From the Last Page
         payment_Form = PaymentForm(request.POST or None)
         # Get Shipping Session Data created in the billing info view
@@ -78,23 +78,35 @@ def process_order(request):
             my_shipping['shipping_country']
         )
         amount_paid = cart_total_price
+
         if request.user.is_authenticated:
             # logged in
             user = request.user
             # create order for logged in users
             order = Order(user=user, full_name=full_name, email=email, ShippingAddress=my_address, amount_paid=amount_paid)
             order.save()
+            # get order items info
+            for product_id, product_qty in cart_products_qty.items():
+                # calculate item price
+                price = cart.calculate_price(product=product_id,qty=product_qty)
+                order_item = OrderItem(order=order, user=user, product=Product.objects.get(id=product_id), quantity=product_qty, price=price)
+                order_item.save()
+
+        # created order items for loggend in users 
         else:
             #not logged in
-            # created order for anonymos users 
+            # created order for anonymous users 
             order = Order(full_name=full_name, email=email, ShippingAddress=my_address, amount_paid=amount_paid)
             order.save()
+            # create order items for anonymous users
+            for product_id, product_qty in cart_products_qty.items():
+                # calculate item price
+                price = cart.calculate_price(product=product_id,qty=product_qty)
+                order_item = OrderItem(order=order, product=Product.objects.get(id=product_id), quantity=product_qty, price= price)
+                order_item.save()
 
-
-        print('succes')
         messages.error(request, 'Order Places')
         return redirect('index')
-
 
     else:
         messages.error(request, 'Access Denied!')

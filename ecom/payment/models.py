@@ -51,7 +51,6 @@ class OrderItem(models.Model):
     quantity = models.PositiveBigIntegerField(default=1)
     price = models.DecimalField(max_digits=7, decimal_places=2)
 
-
     def __str__(self) -> str:
         return f'order item - {str(self.id)}'
 

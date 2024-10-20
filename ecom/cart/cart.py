@@ -91,6 +91,15 @@ class Cart():
                 prices.append(product_price)
         return sum(prices)
     
+    def calculate_price(self, product, qty):
+        product = Product.objects.get(id=product)
+        price = 0
+        if product.on_sale:
+           price = product.sale_price * qty
+        else:
+           price = product.price * qty
+        return price
+
    
 
             
