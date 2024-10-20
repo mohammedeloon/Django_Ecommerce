@@ -100,7 +100,10 @@ class Cart():
            price = product.price * qty
         return price
 
-   
+    def delete_cart(request):
+        for key in list(request.session.keys()):
+          if key == "session_key":
+             del request.session[key]
 
             
 

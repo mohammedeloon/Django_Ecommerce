@@ -104,6 +104,8 @@ def process_order(request):
                 price = cart.calculate_price(product=product_id,qty=product_qty)
                 order_item = OrderItem(order=order, product=Product.objects.get(id=product_id), quantity=product_qty, price= price)
                 order_item.save()
+        # Delete our cart
+        cart.delete_cart()
 
         messages.error(request, 'Order Places')
         return redirect('index')
