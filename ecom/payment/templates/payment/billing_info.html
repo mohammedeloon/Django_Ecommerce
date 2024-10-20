@@ -19,21 +19,21 @@
                 </div>
                 <div class="card-body">
                     {% for product in cart_products %}
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div>
-                                <h5 class="fw-bold">{{ product.name }}</h5>
-                                <p class="mb-0 text-muted">Quantity: 
-                                    {% for key, value in cart_products_qty.items %}
-                                        {% if key == product.id|slugify %}
-                                            {{ value }}
-                                        {% endif %}
-                                    {% endfor %}
-                                </p>
-                            </div>
-                            <div>
-                                <p class="mb-0 fw-bold">${{ product.price }}</p>
-                            </div>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="fw-bold">{{ product.name }}</h5>
+                            <p class="mb-0 text-muted">Quantity:
+                                {% for key, value in cart_products_qty.items %}
+                                {% if key == product.id|slugify %}
+                                {{ value }}
+                                {% endif %}
+                                {% endfor %}
+                            </p>
                         </div>
+                        <div>
+                            <p class="mb-0 fw-bold">${{ product.price }}</p>
+                        </div>
+                    </div>
                     {% endfor %}
                     <hr>
                     <div class="d-flex justify-content-between">
@@ -82,7 +82,9 @@
                     <h4 class="mb-0">Billing Information</h4>
                 </div>
                 <div class="card-body">
-                    {{ billing_form.as_p }}
+                    <form action="{% url 'process_order' %}" method="POST">
+                        {% csrf_token %}
+                        {{ billing_form.as_p }}
                 </div>
             </div>
         </div>
@@ -91,9 +93,10 @@
     <!-- Checkout Button -->
     <div class="row justify-content-center mt-4">
         <div class="col-12 col-md-6 d-flex justify-content-center text-center">
-            <a href="#" class="btn btn-success btn-lg w-100">Pay</a>
+            <button type="submit" class="btn btn-success btn-lg w-100">Pay</button>
         </div>
     </div>
+    </form>
 </section>
 
 
