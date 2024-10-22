@@ -113,3 +113,20 @@ def process_order(request):
     else:
         messages.error(request, 'Access Denied!')
         return redirect('index')
+    
+def shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+        return render(request, "payment/shipped_dash.html", {})
+    else:
+        messages.error(request, 'Access Denied')
+        return redirect('index')
+
+
+def not_shipped_dash(request):
+    if request.user.is_authenticated and request.user.is_superuser:
+
+        return render(request, "payment/not_shipped_dash.html", {})
+    else:
+        messages.error(request, 'Access Denied')
+        return redirect('index')
+    
