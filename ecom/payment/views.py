@@ -108,6 +108,12 @@ def process_order(request):
         # Delete our cart
         cart.delete_cart()
 
+        # Delete cart from database as well (old_cart field)
+        current_user = Profile.objects.filter(user__id=request.user.id)
+        current_user.update(old_cart="")
+        current_user.save()
+        
+
         messages.error(request, 'Order Places')
         return redirect('index')
 
