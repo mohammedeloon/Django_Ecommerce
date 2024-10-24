@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, redirect
 from cart.cart import Cart
 from payment.models import ShippingAddress, Order, OrderItem
@@ -135,6 +136,24 @@ def orders(request, pk):
         order = Order.objects.get(id=pk)
         # get order items
         order_items = OrderItem.objects.filter(order=pk)
+
+        if request.POST:
+            status = request.POST['shipping_status']
+            # Check if true or false
+            if status == "true":
+                # Get the order
+                order = Order.objects.filter(id=pk)
+                # Update the status
+                now = datetime.datetime.now()
+                order.update(shipped=True, date_shipped=now)
+            else:
+                # Get the order
+                order = Order.objects.filter(id=pk)
+                # Update the status
+                order.update(shipped=False)
+            messages.success(request, "Shipping Status Updated")
+            return redirect('index')
+
         return render(request, 'payment/orders.html', {'order': order, 'order_items':order_items})
 
     else:
