@@ -127,6 +127,16 @@ def not_shipped_dash(request):
     if request.user.is_authenticated and request.user.is_superuser:
         un_shipped_items = Order.objects.filter(shipped=False)
         return render(request, "payment/not_shipped_dash.html", {'un_shipped_items': un_shipped_items})
+    
+    
+def orders(request, pk):
+    if request.user.is_authenticated and request.user.is_superuser:
+        # get the order
+        order = Order.objects.get(id=pk)
+        # get order items
+        order_items = OrderItem.objects.filter(order=pk)
+        return render(request, 'payment/orders.html', {'order': order, 'order_items':order_items})
+
     else:
         messages.error(request, 'Access Denied')
         return redirect('index')

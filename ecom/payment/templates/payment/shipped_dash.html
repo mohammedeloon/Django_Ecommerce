@@ -17,6 +17,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Full Name</th>
+                                    <th scope="col">Email</th>
                                     <th scope="col">Shipping Address</th>
                                     <th scope="col">Amount Paid</th>
                                     <th scope="col">Date Shipped</th>
@@ -25,8 +26,9 @@
                             <tbody>
                                 {% for order in shipped_items %}
                                 <tr>
-                                    <th scope="row">{{ loop.index }}</th> 
+                                    <td ><a href="{% url 'orders' order.id%}">{{ order.id }}</a></td> 
                                     <td>{{ order.full_name }}</td>
+                                    <td>{{ order.email }}</td>
                                     <td>{{ order.ShippingAddress }}</td>
                                     <td>${{ order.amount_paid }}</td> 
                                     <td>{{ order.date_shipped }}</td>
