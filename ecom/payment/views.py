@@ -7,10 +7,17 @@ from store.models import Profile, Product
 from payment.forms import ShippingForm, PaymentForm
 from store.forms import UserInfoForm
 from django.contrib import messages
+from django.urls import reverse
+from django.conf import settings
+import uuid # for creating unique user id for duplicate user's orders
+from paypal.standard.forms import PayPalPaymentsForm
 
 
 def payment_success(request):
     return render(request, 'payment/payment_success.html', {})
+
+def payment_failed(request):
+    return render(request, 'payment/payment_failed.html', {})
 
 def check_out(request):
     cart = Cart(request)
@@ -43,14 +50,32 @@ def billing_info(request):
         #create a session with shipping info 
         my_shipping = request.POST
         request.session['my_shipping'] = my_shipping
+        # get host 
+        host = request.get_host()
+        # create paypal dict
+        paypal_dict = {
+            'bussiness': settings.PAYPAL_RECEIVER_EMAIL,
+            'amount': cart_total_price,
+            'item_name': 'Clothes Order',
+            'no_shipping': '2',
+            'invoice': str(uuid.uuid4()),
+            'currency_code': 'USD',
+            'notify_url':'http://{}{}'.format(host, reverse('paypal-ipn')),
+            'return_url':'http://{}{}'.format(host, reverse('payment_success')),
+            'cancel_return':'http://{}{}'.format(host, reverse('payment_failed')),
+
+        }
+        # Create actual paypal button
+        paypal_form = PayPalPaymentsForm(initial=paypal_dict)
+
         if request.user.is_authenticated:
             # get the billing form 
             billing_form = PaymentForm()
-            return render(request, "payment/billing_info.html", {"cart_products":cart_products, "cart_products_qty":cart_products_qty, "cart_total_price":cart_total_price, "shipping_info":request.POST, "billing_form": billing_form})
+            return render(request, "payment/billing_info.html", {"cart_products":cart_products, "cart_products_qty":cart_products_qty, "cart_total_price":cart_total_price, "shipping_info":request.POST, "billing_form": billing_form, 'paypal_form':paypal_form})
         else:
             billing_form = PaymentForm()
-            return render(request, "payment/billing_info.html", {"cart_products":cart_products, "cart_products_qty":cart_products_qty, "cart_total_price":cart_total_price, "shipping_info":request.POST, "billing_form": billing_form})
-
+            return render(request, "payment/billing_info.html", {"cart_products":cart_products, "cart_products_qty":cart_products_qty, "cart_total_price":cart_total_price, "shipping_info":request.POST, "billing_form": billing_form, 'paypal_form':paypal_form})
+    
 
     else:
         messages.error(request, 'Access Denied!')

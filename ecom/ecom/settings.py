@@ -130,4 +130,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 PAYPAL_TEST = True
 
 # paypal reciever email
-PAYPAL_RECEIVER_EMAIL =  'mosh_bussiness@gmail.com'
+PAYPAL_RECEIVER_EMAIL = 'mosh_bussiness@gmail.com'
