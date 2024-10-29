@@ -8,6 +8,7 @@ from payment.forms import ShippingForm, PaymentForm
 from store.forms import UserInfoForm
 from django.contrib import messages
 
+
 def payment_success(request):
     return render(request, 'payment/payment_success.html', {})
 
