@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-u--y641rhm5f2otd8du^!9&my)o+ubs-i1+^8z7cnl0t&ccc!l
 DEBUG = True
 
 ALLOWED_HOSTS = ['loaclhost', '011d-150-214-75-181.ngrok-free.app']
-CSRF_TRUSTED_ORIGINS = ['http://localhost', 'https://011d-150-214-75-181.ngrok-free.app']
+CSRF_TRUSTED_ORIGINS = ['https://www.paypal.com', 'https://www.sandbox.paypal.com', 'http://localhost', 'https://011d-150-214-75-181.ngrok-free.app']
 
 
 # Application definition
