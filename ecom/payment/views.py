@@ -54,8 +54,8 @@ def billing_info(request):
         host = request.get_host()
         # create paypal dict
         paypal_dict = {
-            'bussiness': settings.PAYPAL_RECEIVER_EMAIL,
-            'amount': cart_total_price,
+            'business': settings.PAYPAL_RECEIVER_EMAIL,
+            'amount': str(cart_total_price),
             'item_name': 'Clothes Order',
             'no_shipping': '2',
             'invoice': str(uuid.uuid4()),
