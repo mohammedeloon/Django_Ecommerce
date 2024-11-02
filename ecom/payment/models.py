@@ -16,6 +16,10 @@ class ShippingAddress(models.Model):
     shipping_zipcode = models.CharField(max_length=225, null=True, blank=True)
     shipping_country = models.CharField(max_length=225)
 
+    # paypal invoice and Paid T/F
+    invoice = models.CharField(max_length=250, null=True, blank=True)
+    paid = models.BooleanField(default=False)
+    
     def __str__(self) -> str:
         return f"Shipping Address = {str(self.id)}"
 
