@@ -52,13 +52,17 @@ def billing_info(request):
         request.session['my_shipping'] = my_shipping
         # get host 
         host = request.get_host()
+        # Create Invoice number
+        my_invoice = str(uuid.uuid4())
+        # create an order
+        
         # create paypal dict
         paypal_dict = {
             'business': settings.PAYPAL_RECEIVER_EMAIL,
             'amount': str(cart_total_price),
             'item_name': 'Clothes Order',
             'no_shipping': '2',
-            'invoice': str(uuid.uuid4()),
+            'invoice': my_invoice,
             'currency_code': 'USD',
             'notify_url':'http://{}{}'.format(host, reverse('paypal-ipn')),
             'return_url':'http://{}{}'.format(host, reverse('payment_success')),
